@@ -1,6 +1,6 @@
 // Webhook Stripe pour gérer les événements de paiement
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe, getPlanFromPriceId } from '@/lib/stripe';
+import { stripe, isStripeConfigured, getPlanFromPriceId } from '@/lib/stripe';
 import prisma from '@/lib/prisma';
 import { logAuditEvent } from '@/lib/audit-log';
 import Stripe from 'stripe';
@@ -130,6 +130,14 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier si Stripe est configuré
+    if (!isStripeConfigured || !stripe) {
+      return NextResponse.json(
+        { error: 'Stripe is not configured' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.text();
     const signature = request.headers.get('stripe-signature');
 

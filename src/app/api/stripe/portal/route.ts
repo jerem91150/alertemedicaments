@@ -2,12 +2,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { createPortalSession } from '@/lib/stripe';
+import { createPortalSession, isStripeConfigured } from '@/lib/stripe';
 import prisma from '@/lib/prisma';
 import { logAuditEvent } from '@/lib/audit-log';
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier si Stripe est configuré
+    if (!isStripeConfigured) {
+      return NextResponse.json(
+        { error: 'Les paiements ne sont pas encore configurés' },
+        { status: 503 }
+      );
+    }
+
     // Vérifier l'authentification
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {

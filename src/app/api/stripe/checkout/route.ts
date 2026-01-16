@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { stripe, STRIPE_PRICES, getOrCreateStripeCustomer } from '@/lib/stripe';
+import { stripe, isStripeConfigured, STRIPE_PRICES, getOrCreateStripeCustomer } from '@/lib/stripe';
 import { z } from 'zod';
 import { logAuditEvent } from '@/lib/audit-log';
 
@@ -13,6 +13,14 @@ const checkoutSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier si Stripe est configuré
+    if (!isStripeConfigured || !stripe) {
+      return NextResponse.json(
+        { error: 'Les paiements ne sont pas encore configurés' },
+        { status: 503 }
+      );
+    }
+
     // Vérifier l'authentification
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
