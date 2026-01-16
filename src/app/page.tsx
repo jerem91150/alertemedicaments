@@ -166,7 +166,7 @@ export default function HomePage() {
                   <Pill className="h-6 w-6 text-white" />
                 </div>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">AlerteMedicaments</span>
+              <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">MediTrouve</span>
             </div>
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Fonctionnalites</a>
@@ -572,7 +572,7 @@ export default function HomePage() {
                 <div className="bg-gradient-to-r from-teal-500 to-cyan-600 p-2 rounded-xl">
                   <Pill className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-xl font-bold text-white">AlerteMedicaments</span>
+                <span className="text-xl font-bold text-white">MediTrouve</span>
               </div>
               <p className="text-gray-500 leading-relaxed">
                 Service gratuit de suivi des ruptures et tensions d&apos;approvisionnement de medicaments en France.
@@ -589,9 +589,9 @@ export default function HomePage() {
             <div>
               <h4 className="font-semibold text-white mb-4">Legal</h4>
               <ul className="space-y-3">
-                <li><a href="#" className="hover:text-white transition-colors">Mentions legales</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Confidentialite</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">CGU</a></li>
+                <li><Link href="/mentions-legales" className="hover:text-white transition-colors">Mentions legales</Link></li>
+                <li><Link href="/confidentialite" className="hover:text-white transition-colors">Confidentialite</Link></li>
+                <li><Link href="/cgu" className="hover:text-white transition-colors">CGU</Link></li>
               </ul>
             </div>
             <div>
@@ -601,8 +601,19 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm">&copy; 2024 AlerteMedicaments. Tous droits reserves.</p>
+
+          {/* Legal Disclaimer */}
+          <div className="py-6 border-t border-gray-800 mb-6">
+            <p className="text-xs text-gray-500 text-center max-w-4xl mx-auto leading-relaxed">
+              <strong className="text-gray-400">Information importante :</strong> MediTrouve est un service d&apos;information et ne constitue pas un dispositif medical.
+              Les informations fournies ne remplacent en aucun cas l&apos;avis d&apos;un professionnel de sante.
+              Consultez toujours votre medecin ou pharmacien pour toute question relative a votre traitement.
+              En cas d&apos;urgence, contactez le 15 (SAMU) ou le 112.
+            </p>
+          </div>
+
+          <div className="pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm">&copy; 2025 MediTrouve. Tous droits reserves.</p>
             <div className="flex items-center gap-2">
               <Lock className="h-4 w-4" />
               <span className="text-sm">Donnees securisees</span>

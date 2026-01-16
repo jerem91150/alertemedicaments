@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MediTrouve
 
-## Getting Started
+Application de suivi des ruptures de medicaments en France.
 
-First, run the development server:
+## Description
+
+MediTrouve permet aux patients de suivre la disponibilite de leurs medicaments et de recevoir des alertes en temps reel en cas de rupture ou de retour a la disponibilite. Les donnees proviennent de l'ANSM (Agence Nationale de Securite du Medicament).
+
+## Fonctionnalites
+
+- Recherche de medicaments par nom, molecule ou laboratoire
+- Alertes personnalisees (email, push)
+- Scan d'ordonnance par OCR
+- Carte des pharmacies
+- Mode famille (multi-profils)
+- Authentification securisee avec 2FA
+
+## Stack Technique
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **Database**: PostgreSQL + Prisma
+- **Auth**: NextAuth.js
+- **Payments**: Stripe
+- **Emails**: Resend
+
+## Installation
 
 ```bash
+# Cloner le repo
+git clone https://github.com/votre-repo/meditrouve.git
+cd meditrouve
+
+# Installer les dependances
+npm install
+
+# Configurer les variables d'environnement
+cp .env.example .env.local
+
+# Initialiser la base de donnees
+npx prisma migrate dev
+
+# Lancer le serveur de dev
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables d'environnement
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Voir `.env.example` pour la liste complete.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploiement
 
-## Learn More
+Le projet est deploye sur Vercel avec une base PostgreSQL.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Licence
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Tous droits reserves - MediTrouve 2025

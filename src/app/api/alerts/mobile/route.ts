@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 
-const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+const JWT_SECRET = process.env.JWT_SECRET || "meditrouve-jwt-secret-2024";
 
 function getUserIdFromToken(request: Request): string | null {
   const authHeader = request.headers.get("Authorization");
@@ -48,7 +47,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { medicationId, notifyOnAvailable, notifyOnTension, notifyOnRupture } = await request.json();
+    const { medicationId, type } = await request.json();
 
     if (!medicationId) {
       return NextResponse.json({ error: "ID médicament requis" }, { status: 400 });
@@ -67,9 +66,8 @@ export async function POST(request: Request) {
       data: {
         userId,
         medicationId,
-        notifyOnAvailable: notifyOnAvailable ?? true,
-        notifyOnTension: notifyOnTension ?? true,
-        notifyOnRupture: notifyOnRupture ?? true,
+        type: type || "AVAILABLE",
+        isActive: true,
       },
       include: { medication: true },
     });

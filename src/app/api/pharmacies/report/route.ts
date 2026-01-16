@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
+import { processSignalPoints } from "@/lib/gamification";
 
 // Signaler la disponibilité d'un médicament dans une pharmacie
 export async function POST(request: NextRequest) {
@@ -66,6 +67,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Attribuer les points de gamification
+    const pointsResult = await processSignalPoints(user.id, status);
+
     return NextResponse.json({
       success: true,
       report: {
@@ -74,6 +78,10 @@ export async function POST(request: NextRequest) {
         medication: report.medication.name,
         status: report.status,
         expiresAt: report.expiresAt,
+      },
+      points: {
+        awarded: pointsResult.pointsAwarded,
+        breakdown: pointsResult.breakdown,
       },
     });
   } catch (error) {
@@ -97,6 +105,14 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
+    }
+
     const body = await request.json();
     const { reportId, confirm } = body;
 
@@ -112,6 +128,11 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Signalement non trouvé" }, { status: 404 });
     }
 
+    // Ne pas permettre de verifier son propre signalement
+    if (report.userId === user.id) {
+      return NextResponse.json({ error: "Vous ne pouvez pas verifier votre propre signalement" }, { status: 400 });
+    }
+
     // Incrémenter le compteur de vérifications
     const updated = await prisma.pharmacyReport.update({
       where: { id: reportId },
@@ -121,9 +142,23 @@ export async function PUT(request: NextRequest) {
       },
     });
 
+    // Attribuer des points au verificateur
+    const { processVerifyPoints, processSignalVerifiedBonus } = await import("@/lib/gamification");
+    const verifyPoints = await processVerifyPoints(user.id);
+
+    // Bonus pour le createur du signalement si c'est la premiere verification
+    let reporterBonus = 0;
+    if (updated.verifiedBy === 1) {
+      reporterBonus = await processSignalVerifiedBonus(report.userId);
+    }
+
     return NextResponse.json({
       success: true,
       verifiedBy: updated.verifiedBy,
+      points: {
+        awarded: verifyPoints,
+        message: `+${verifyPoints} points pour la verification!`,
+      },
     });
   } catch (error) {
     console.error("Verify error:", error);

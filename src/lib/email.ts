@@ -20,7 +20,7 @@ interface EmailOptions {
 export async function sendEmail({ to, subject, html }: EmailOptions) {
   try {
     const info = await transporter.sendMail({
-      from: `"AlerteMedicaments" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+      from: `"MediTrouve" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
       to,
       subject,
       html,
@@ -59,7 +59,7 @@ export function generateAlertEmail(
   <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     <!-- Header -->
     <div style="background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%); padding: 32px; text-align: center;">
-      <h1 style="color: white; margin: 0; font-size: 24px;">AlerteMedicaments</h1>
+      <h1 style="color: white; margin: 0; font-size: 24px;">MediTrouve</h1>
       <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0;">Changement de disponibilite</p>
     </div>
 
@@ -90,7 +90,7 @@ export function generateAlertEmail(
     <!-- Footer -->
     <div style="background: #f9fafb; padding: 24px; text-align: center; border-top: 1px solid #e5e7eb;">
       <p style="color: #9ca3af; font-size: 12px; margin: 0;">
-        Vous recevez cet email car vous avez active une alerte sur AlerteMedicaments.
+        Vous recevez cet email car vous avez active une alerte sur MediTrouve.
         <br>
         <a href="${process.env.NEXTAUTH_URL || "http://localhost:3001"}/profile" style="color: #14b8a6;">Gerer mes preferences</a>
       </p>
@@ -108,13 +108,13 @@ export function generateWelcomeEmail(userName: string) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bienvenue sur AlerteMedicaments</title>
+  <title>Bienvenue sur MediTrouve</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f9fafb; margin: 0; padding: 20px;">
   <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     <!-- Header -->
     <div style="background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%); padding: 32px; text-align: center;">
-      <h1 style="color: white; margin: 0; font-size: 24px;">Bienvenue sur AlerteMedicaments !</h1>
+      <h1 style="color: white; margin: 0; font-size: 24px;">Bienvenue sur MediTrouve !</h1>
     </div>
 
     <!-- Content -->
@@ -142,7 +142,7 @@ export function generateWelcomeEmail(userName: string) {
     <!-- Footer -->
     <div style="background: #f9fafb; padding: 24px; text-align: center; border-top: 1px solid #e5e7eb;">
       <p style="color: #9ca3af; font-size: 12px; margin: 0;">
-        AlerteMedicaments - Suivi des ruptures de medicaments en France
+        MediTrouve - Suivi des ruptures de medicaments en France
       </p>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export type AuditAction =
   | "LOGIN_SUCCESS"
@@ -9,6 +9,7 @@ export type AuditAction =
   | "PASSWORD_RESET_REQUEST"
   | "PASSWORD_RESET_COMPLETE"
   | "ACCOUNT_DELETION"
+  | "ACCOUNT_DELETED"
   | "DATA_EXPORT"
   | "PROFILE_CREATE"
   | "PROFILE_UPDATE"
@@ -19,6 +20,13 @@ export type AuditAction =
   | "ORDONNANCE_SCAN"
   | "CONSENT_UPDATE"
   | "PUSH_TOKEN_REGISTER"
+  | "CHECKOUT_INITIATED"
+  | "SUBSCRIPTION_CREATED"
+  | "SUBSCRIPTION_UPDATED"
+  | "SUBSCRIPTION_CANCELLED"
+  | "SUBSCRIPTION_CANCELLATION_SCHEDULED"
+  | "PAYMENT_FAILED"
+  | "PORTAL_ACCESSED"
   | "SUSPICIOUS_ACTIVITY";
 
 export interface AuditLogEntry {
@@ -32,10 +40,27 @@ export interface AuditLogEntry {
   errorMessage?: string;
 }
 
+// Simplified audit log for common cases
+interface SimpleAuditLog {
+  userId: string;
+  action: AuditAction;
+  resource?: string;
+  details?: Record<string, unknown>;
+}
+
 // In production, use a proper logging service (DataDog, Splunk, etc.)
-export async function logAuditEvent(entry: AuditLogEntry): Promise<void> {
+export async function logAuditEvent(entry: AuditLogEntry | SimpleAuditLog): Promise<void> {
+  // Convert simple format to full format
+  const fullEntry: AuditLogEntry = 'success' in entry
+    ? entry
+    : {
+        action: entry.action,
+        userId: entry.userId,
+        details: { ...entry.details, resource: entry.resource },
+        success: true,
+      };
   const logEntry = {
-    ...entry,
+    ...fullEntry,
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development",
   };
@@ -56,23 +81,23 @@ export async function logAuditEvent(entry: AuditLogEntry): Promise<void> {
     "SUSPICIOUS_ACTIVITY",
   ];
 
-  if (securityActions.includes(entry.action) && entry.userId) {
+  if (securityActions.includes(fullEntry.action) && fullEntry.userId) {
     try {
       await prisma.notification.create({
         data: {
-          userId: entry.userId,
+          userId: fullEntry.userId,
           type: "AVAILABLE_ALERT",
-          title: `Activité de sécurité: ${entry.action}`,
-          message: entry.success
+          title: `Activité de sécurité: ${fullEntry.action}`,
+          message: fullEntry.success
             ? `Action effectuée avec succès`
-            : `Tentative échouée: ${entry.errorMessage || "Erreur inconnue"}`,
+            : `Tentative échouée: ${fullEntry.errorMessage || "Erreur inconnue"}`,
           data: {
-            action: entry.action,
-            ip: entry.ip,
-            userAgent: entry.userAgent?.substring(0, 200),
+            action: fullEntry.action,
+            ip: fullEntry.ip,
+            userAgent: fullEntry.userAgent?.substring(0, 200),
             timestamp: logEntry.timestamp,
           },
-          read: entry.success, // Mark failed attempts as unread
+          read: fullEntry.success, // Mark failed attempts as unread
         },
       });
     } catch (error) {

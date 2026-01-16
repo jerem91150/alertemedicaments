@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell, Plus, AlertTriangle, Clock, CheckCircle, Pill, ArrowRight, Search } from "lucide-react";
+import LegalDisclaimer from "@/components/LegalDisclaimer";
 
 interface Alert {
   id: string;
@@ -265,6 +266,9 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Legal Disclaimer */}
+      <LegalDisclaimer className="mt-8" />
     </div>
   );
 }

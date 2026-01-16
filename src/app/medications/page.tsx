@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Pill, AlertTriangle, CheckCircle, Clock, ArrowLeft, Bell, Search, Filter, ChevronLeft, ChevronRight, RefreshCw, X, Check } from "lucide-react";
+import LegalDisclaimer from "@/components/LegalDisclaimer";
 
 interface Medication {
   id: string;
@@ -163,7 +164,7 @@ export default function MedicationsPage() {
                   <Pill className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-lg font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-                  AlerteMedicaments
+                  MediTrouve
                 </span>
               </div>
             </div>
@@ -402,6 +403,9 @@ export default function MedicationsPage() {
             Page {page} sur {totalPages}
           </p>
         )}
+
+        {/* Legal Disclaimer */}
+        <LegalDisclaimer className="mt-12" />
       </main>
     </div>
   );

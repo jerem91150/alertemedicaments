@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
             <p className="text-gray-600 leading-relaxed">
-              Alerte Médicaments (&quot;nous&quot;, &quot;notre&quot;, &quot;nos&quot;) s&apos;engage à protéger votre vie privée.
+              MediTrouve (&quot;nous&quot;, &quot;notre&quot;, &quot;nos&quot;) s&apos;engage à protéger votre vie privée.
               Cette politique de confidentialité explique comment nous collectons, utilisons, stockons et protégeons
               vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD)
               et à la loi Informatique et Libertés.
@@ -36,9 +36,9 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Responsable du traitement</h2>
             <div className="bg-gray-50 rounded-lg p-4">
               <p className="text-gray-600">
-                <strong>Alerte Médicaments</strong><br />
-                Email : contact@alertemedicaments.fr<br />
-                DPO (Délégué à la Protection des Données) : dpo@alertemedicaments.fr
+                <strong>MediTrouve</strong><br />
+                Email : contact@meditrouve.fr<br />
+                DPO (Délégué à la Protection des Données) : dpo@meditrouve.fr
               </p>
             </div>
           </section>
@@ -163,7 +163,7 @@ export default function PrivacyPage() {
             <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
               <p className="text-amber-800 text-sm">
                 <strong>Pour exercer vos droits :</strong> Rendez-vous dans Profil → Mes données,
-                ou contactez-nous à <a href="mailto:dpo@alertemedicaments.fr" className="underline">dpo@alertemedicaments.fr</a>
+                ou contactez-nous à <a href="mailto:dpo@meditrouve.fr" className="underline">dpo@meditrouve.fr</a>
               </p>
             </div>
           </section>
@@ -248,7 +248,7 @@ export default function PrivacyPage() {
             </p>
             <div className="bg-gray-50 rounded-lg p-4 space-y-2">
               <p className="text-gray-600">
-                <strong>Email :</strong> <a href="mailto:dpo@alertemedicaments.fr" className="text-teal-600 hover:underline">dpo@alertemedicaments.fr</a>
+                <strong>Email :</strong> <a href="mailto:dpo@meditrouve.fr" className="text-teal-600 hover:underline">dpo@meditrouve.fr</a>
               </p>
               <p className="text-gray-600">
                 <strong>Réclamation CNIL :</strong> Si vous estimez que vos droits ne sont pas respectés,
@@ -272,7 +272,7 @@ export default function PrivacyPage() {
       {/* Footer */}
       <footer className="bg-gray-100 py-8 mt-12">
         <div className="max-w-4xl mx-auto px-4 text-center text-gray-600 text-sm">
-          <p>© {new Date().getFullYear()} Alerte Médicaments - Tous droits réservés</p>
+          <p>© {new Date().getFullYear()} MediTrouve - Tous droits réservés</p>
           <div className="mt-2 space-x-4">
             <Link href="/terms" className="hover:text-teal-600">Conditions d&apos;utilisation</Link>
             <Link href="/privacy" className="hover:text-teal-600">Politique de confidentialité</Link>

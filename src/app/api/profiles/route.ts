@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { guardLimit } from "@/lib/plan-guard";
+import { PlanId } from "@/lib/plans";
 
 export async function GET() {
   try {
@@ -61,25 +63,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier le nombre de profils (limite plan)
-    const existingProfiles = await prisma.profile.count({
-      where: { userId: session.user.id },
-    });
+    const [existingProfiles, user] = await Promise.all([
+      prisma.profile.count({
+        where: { userId: session.user.id },
+      }),
+      prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { plan: true },
+      }),
+    ]);
 
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { plan: true },
-    });
-
-    const maxProfiles =
-      user?.plan === "FAMILLE" ? 5 : user?.plan === "PREMIUM" ? 3 : 1;
-
-    if (existingProfiles >= maxProfiles) {
-      return NextResponse.json(
-        {
-          error: `Limite de ${maxProfiles} profil(s) atteinte. Passez au plan supérieur.`,
-        },
-        { status: 403 }
-      );
+    // Utiliser le guard pour vérifier la limite
+    const planGuard = guardLimit(
+      (user?.plan as PlanId) || 'FREE',
+      'maxProfiles',
+      existingProfiles
+    );
+    if (planGuard) {
+      return planGuard;
     }
 
     // Définir si c'est le profil principal (premier profil)

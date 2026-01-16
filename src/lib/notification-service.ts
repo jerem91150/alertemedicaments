@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { sendMedicationStatusAlert } from "@/lib/firebase-admin";
 import { MedicationStatus } from "@prisma/client";
 

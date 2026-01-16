@@ -36,6 +36,10 @@ model User {
   notifyEmail      Boolean          @default(true)
   notifyPush       Boolean          @default(true)
   notifySMS        Boolean          @default(false)
+  // 2FA
+  twoFactorEnabled Boolean          @default(false)
+  twoFactorSecret  String?          // Encrypted TOTP secret
+  backupCodes      String[]         // Encrypted backup codes
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
 
@@ -47,6 +51,7 @@ model User {
   familyInvites    FamilyInvite[]   @relation("InvitedBy")
   receivedInvites  FamilyInvite[]   @relation("InvitedUser")
   pushTokens       PushToken[]
+  points           UserPoints?
 }
 
 // Profile pour mode famille/aidant (self, parent, enfant, etc.)
@@ -279,6 +284,7 @@ model Pharmacy {
   updatedAt    DateTime @updatedAt
 
   reports      PharmacyReport[]
+  accounts     PharmacyAccount[]
 
   @@index([city])
   @@index([postalCode])
@@ -393,6 +399,120 @@ model Prediction {
 
   @@index([medicationId])
   @@index([predictedDate])
+}
+
+// ============================================
+// GAMIFICATION - POINTS & REWARDS
+// ============================================
+
+enum UserLevel {
+  NEWBIE
+  CONTRIBUTOR
+  SUPER_CONTRIBUTOR
+  AMBASSADOR
+  LEGEND
+}
+
+model UserPoints {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  totalPoints   Int       @default(0)
+  weeklyPoints  Int       @default(0)
+  monthlyPoints Int       @default(0)
+  level         UserLevel @default(NEWBIE)
+  streak        Int       @default(0)       // Jours consecutifs avec signalement
+  lastSignalAt  DateTime?
+  reportsCount  Int       @default(0)       // Nombre total de signalements
+  verifiedCount Int       @default(0)       // Signalements verifies par d'autres
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rewards       UserReward[]
+
+  @@index([totalPoints])
+  @@index([weeklyPoints])
+  @@index([level])
+}
+
+enum RewardType {
+  PREMIUM_WEEK
+  PREMIUM_MONTH
+  PREMIUM_3MONTHS
+  PREMIUM_YEAR
+  BADGE
+}
+
+model Reward {
+  id            String     @id @default(cuid())
+  name          String
+  description   String
+  type          RewardType
+  pointsCost    Int
+  badgeIcon     String?    // Nom de l'icone pour les badges
+  premiumDays   Int?       // Jours de premium offerts
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+
+  userRewards   UserReward[]
+
+  @@index([pointsCost])
+  @@index([isActive])
+}
+
+model UserReward {
+  id            String    @id @default(cuid())
+  userId        String
+  userPointsId  String
+  rewardId      String
+  claimedAt     DateTime  @default(now())
+  expiresAt     DateTime? // Pour les recompenses temporaires (premium)
+  isActive      Boolean   @default(true)
+
+  userPoints    UserPoints @relation(fields: [userPointsId], references: [id], onDelete: Cascade)
+  reward        Reward     @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userPointsId])
+  @@index([rewardId])
+}
+
+// ============================================
+// PHARMACIENS B2B
+// ============================================
+
+enum PharmacyAccountStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  SUSPENDED
+}
+
+model PharmacyAccount {
+  id            String                @id @default(cuid())
+  email         String                @unique
+  password      String
+  pharmacyName  String
+  finess        String                @unique  // Numero FINESS
+  siret         String?
+  ownerName     String
+  phone         String
+  address       String
+  city          String
+  postalCode    String
+  status        PharmacyAccountStatus @default(PENDING)
+  verifiedAt    DateTime?
+  apiKey        String?               @unique  // Cle API pour integration
+  apiEnabled    Boolean               @default(false)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  pharmacyId    String?               // Lien vers Pharmacy si existe
+  pharmacy      Pharmacy?             @relation(fields: [pharmacyId], references: [id])
+
+  @@index([finess])
+  @@index([status])
+  @@index([apiKey])
 }
 
 // ============================================

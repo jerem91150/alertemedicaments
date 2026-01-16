@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+const JWT_SECRET = process.env.JWT_SECRET || "meditrouve-jwt-secret-2024";
 
 export async function POST(request: Request) {
   try {
@@ -20,7 +19,7 @@ export async function POST(request: Request) {
     const user = await prisma.user.findUnique({
       where: { email },
       include: {
-        profile: true,
+        profiles: true,
       },
     });
 
@@ -52,8 +51,8 @@ export async function POST(request: Request) {
         id: user.id,
         email: user.email,
         name: user.name,
-        image: user.image,
-        profile: user.profile,
+        plan: user.plan,
+        profiles: user.profiles,
       },
     });
   } catch (error) {

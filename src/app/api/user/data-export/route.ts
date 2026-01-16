@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { guardFeature } from "@/lib/plan-guard";
+import { PlanId } from "@/lib/plans";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "alertemedicaments-jwt-secret-2024";
+const JWT_SECRET = process.env.JWT_SECRET || "meditrouve-jwt-secret-2024";
 
 // Get user ID from session or JWT token
 async function getUserId(request: NextRequest): Promise<string | null> {
@@ -166,7 +168,7 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Content-Disposition": `attachment; filename="alertemedicaments-data-export-${new Date().toISOString().split("T")[0]}.json"`,
+        "Content-Disposition": `attachment; filename="meditrouve-data-export-${new Date().toISOString().split("T")[0]}.json"`,
       },
     });
   } catch (error) {

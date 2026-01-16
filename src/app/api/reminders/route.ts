@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { guardLimit } from "@/lib/plan-guard";
+import { PlanId } from "@/lib/plans";
 
 export async function GET(request: NextRequest) {
   try {
@@ -90,16 +92,38 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { profileId, userMedicationId, scheduledTime } = body;
 
-    // Vérifier que le profil appartient à l'utilisateur
-    const profile = await prisma.profile.findFirst({
-      where: {
-        id: profileId,
-        userId: session.user.id,
-      },
-    });
+    // Vérifier le profil, le plan et compter les rappels existants
+    const [profile, user, existingReminders] = await Promise.all([
+      prisma.profile.findFirst({
+        where: {
+          id: profileId,
+          userId: session.user.id,
+        },
+      }),
+      prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { plan: true },
+      }),
+      prisma.reminder.count({
+        where: {
+          profile: { userId: session.user.id },
+          status: { in: ['PENDING', 'SENT'] },
+        },
+      }),
+    ]);
 
     if (!profile) {
       return NextResponse.json({ error: "Profil non trouvé" }, { status: 404 });
+    }
+
+    // Vérifier la limite de rappels selon le plan
+    const planGuard = guardLimit(
+      (user?.plan as PlanId) || 'FREE',
+      'maxReminders',
+      existingReminders
+    );
+    if (planGuard) {
+      return planGuard;
     }
 
     const reminder = await prisma.reminder.create({

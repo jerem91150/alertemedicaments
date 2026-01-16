@@ -299,9 +299,113 @@ async function main() {
 
   console.log(`${medications.length} medicaments demo crees`);
 
+  // Creer les recompenses de gamification
+  const rewards = [
+    {
+      id: 'reward-premium-week',
+      name: '1 Semaine Premium',
+      description: 'Profitez de toutes les fonctionnalites Premium pendant 7 jours',
+      type: 'PREMIUM_WEEK' as const,
+      pointsCost: 100,
+      premiumDays: 7,
+      isActive: true,
+    },
+    {
+      id: 'reward-premium-month',
+      name: '1 Mois Premium',
+      description: 'Profitez de toutes les fonctionnalites Premium pendant 30 jours',
+      type: 'PREMIUM_MONTH' as const,
+      pointsCost: 350,
+      premiumDays: 30,
+      isActive: true,
+    },
+    {
+      id: 'reward-premium-3months',
+      name: '3 Mois Premium',
+      description: 'Profitez de toutes les fonctionnalites Premium pendant 90 jours',
+      type: 'PREMIUM_3MONTHS' as const,
+      pointsCost: 900,
+      premiumDays: 90,
+      isActive: true,
+    },
+    {
+      id: 'reward-premium-year',
+      name: '1 An Premium',
+      description: 'Profitez de toutes les fonctionnalites Premium pendant 1 an complet',
+      type: 'PREMIUM_YEAR' as const,
+      pointsCost: 3000,
+      premiumDays: 365,
+      isActive: true,
+    },
+    {
+      id: 'badge-first-signal',
+      name: 'Premier signalement',
+      description: 'Felicitations pour votre premier signalement de disponibilite!',
+      type: 'BADGE' as const,
+      pointsCost: 0,
+      badgeIcon: 'Star',
+      isActive: true,
+    },
+    {
+      id: 'badge-helper',
+      name: 'Entraideur',
+      description: 'Vous avez aide 10 personnes a trouver leurs medicaments',
+      type: 'BADGE' as const,
+      pointsCost: 0,
+      badgeIcon: 'Heart',
+      isActive: true,
+    },
+    {
+      id: 'badge-streak-7',
+      name: 'Assidu',
+      description: 'Vous avez maintenu une serie de 7 jours consecutifs',
+      type: 'BADGE' as const,
+      pointsCost: 0,
+      badgeIcon: 'Flame',
+      isActive: true,
+    },
+    {
+      id: 'badge-streak-30',
+      name: 'Marathonien',
+      description: 'Vous avez maintenu une serie de 30 jours consecutifs!',
+      type: 'BADGE' as const,
+      pointsCost: 0,
+      badgeIcon: 'Trophy',
+      isActive: true,
+    },
+    {
+      id: 'badge-top-weekly',
+      name: 'Champion de la semaine',
+      description: 'Vous avez ete dans le top 3 du classement hebdomadaire',
+      type: 'BADGE' as const,
+      pointsCost: 0,
+      badgeIcon: 'Medal',
+      isActive: true,
+    },
+    {
+      id: 'badge-legend',
+      name: 'Legende',
+      description: 'Vous avez atteint le niveau Legende - merci pour votre contribution exceptionnelle!',
+      type: 'BADGE' as const,
+      pointsCost: 0,
+      badgeIcon: 'Crown',
+      isActive: true,
+    },
+  ];
+
+  for (const reward of rewards) {
+    await prisma.reward.upsert({
+      where: { id: reward.id },
+      update: reward,
+      create: reward,
+    });
+  }
+
+  console.log(`${rewards.length} recompenses de gamification creees`);
+
   console.log('');
   console.log('=================================');
-  console.log('COMPTE ADMIN ALERTE MEDICAMENTS');
+  console.log('COMPTE ADMIN MEDITROUVE');
   console.log('=================================');
   console.log('Email: admin@alertemedicaments.fr');
   console.log('Mot de passe: admin123');

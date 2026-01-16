@@ -51,7 +51,7 @@ export default function DashboardLayout({
                 <Pill className="h-5 w-5 text-white" />
               </div>
               <span className="text-lg font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-                AlerteMedicaments
+                MediTrouve
               </span>
             </Link>
 

@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
           const result = await sendEmail({
             to: user.email,
-            subject: `[AlerteMedicaments] ${medication.name} - ${change.status === "AVAILABLE" ? "Disponible" : change.status === "TENSION" ? "En tension" : "En rupture"}`,
+            subject: `[MediTrouve] ${medication.name} - ${change.status === "AVAILABLE" ? "Disponible" : change.status === "TENSION" ? "En tension" : "En rupture"}`,
             html: emailHtml
           });
 

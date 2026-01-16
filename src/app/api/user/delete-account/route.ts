@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { stripe, getActiveSubscription } from "@/lib/stripe";
+import { logAuditEvent } from "@/lib/audit-log";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-const JWT_SECRET = process.env.JWT_SECRET || "alertemedicaments-jwt-secret-2024";
+const JWT_SECRET = process.env.JWT_SECRET || "meditrouve-jwt-secret-2024";
 
 // Get user from session or JWT token
 async function getUser(request: NextRequest) {
@@ -83,6 +85,33 @@ export async function DELETE(request: NextRequest) {
     };
 
     console.log("Account deletion requested:", deletionLog);
+
+    // Annuler l'abonnement Stripe si existant
+    if (user.stripeCustomerId) {
+      try {
+        const subscription = await getActiveSubscription(user.stripeCustomerId);
+        if (subscription) {
+          await stripe.subscriptions.cancel(subscription.id);
+          console.log("Stripe subscription cancelled:", subscription.id);
+        }
+        // Supprimer le customer Stripe
+        await stripe.customers.del(user.stripeCustomerId);
+      } catch (stripeError) {
+        console.error("Error cancelling Stripe subscription:", stripeError);
+        // Continue avec la suppression même si Stripe échoue
+      }
+    }
+
+    // Log audit event
+    await logAuditEvent({
+      userId: user.id,
+      action: 'ACCOUNT_DELETED',
+      resource: 'user',
+      details: {
+        email: deletionLog.email,
+        ip: deletionLog.ip,
+      },
+    });
 
     // Deactivate push tokens first (soft delete)
     await prisma.pushToken.updateMany({

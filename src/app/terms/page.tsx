@@ -24,7 +24,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Objet</h2>
             <p className="text-gray-600 leading-relaxed">
               Les présentes Conditions Générales d&apos;Utilisation (CGU) régissent l&apos;utilisation
-              du service Alerte Médicaments, accessible via le site web et les applications mobiles.
+              du service MediTrouve, accessible via le site web et les applications mobiles.
               En utilisant ce service, vous acceptez ces conditions dans leur intégralité.
             </p>
           </section>
@@ -32,7 +32,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Description du service</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Alerte Médicaments est un service d&apos;information sur la disponibilité des médicaments
+              MediTrouve est un service d&apos;information sur la disponibilité des médicaments
               en France. Il permet de :
             </p>
             <ul className="list-disc list-inside text-gray-600 space-y-2">
@@ -94,7 +94,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Limitation de responsabilité</h2>
             <p className="text-gray-600 leading-relaxed">
-              Alerte Médicaments décline toute responsabilité en cas de :
+              MediTrouve décline toute responsabilité en cas de :
             </p>
             <ul className="list-disc list-inside text-gray-600 space-y-2 mt-4">
               <li>Informations inexactes ou obsolètes</li>
@@ -123,7 +123,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">10. Contact</h2>
             <p className="text-gray-600 leading-relaxed">
-              Pour toute question : <a href="mailto:contact@alertemedicaments.fr" className="text-teal-600 hover:underline">contact@alertemedicaments.fr</a>
+              Pour toute question : <a href="mailto:contact@meditrouve.fr" className="text-teal-600 hover:underline">contact@meditrouve.fr</a>
             </p>
           </section>
 
@@ -133,7 +133,7 @@ export default function TermsPage() {
       {/* Footer */}
       <footer className="bg-gray-100 py-8 mt-12">
         <div className="max-w-4xl mx-auto px-4 text-center text-gray-600 text-sm">
-          <p>© {new Date().getFullYear()} Alerte Médicaments - Tous droits réservés</p>
+          <p>© {new Date().getFullYear()} MediTrouve - Tous droits réservés</p>
         </div>
       </footer>
     </div>
