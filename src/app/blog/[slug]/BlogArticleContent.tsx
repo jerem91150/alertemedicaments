@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import DOMPurify from 'isomorphic-dompurify';
 
 interface Props {
   slug: string;
@@ -112,7 +113,10 @@ export default function BlogArticleContent({
           prose-a:text-blue-600
           prose-strong:text-gray-900
           prose-li:text-gray-700"
-        dangerouslySetInnerHTML={{ __html: markdownToHtml(content) }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(markdownToHtml(content), {
+          ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'p', 'br', 'strong', 'em', 'a', 'ul', 'li'],
+          ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
+        }) }}
       />
     </div>
   );
