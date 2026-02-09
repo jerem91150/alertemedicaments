@@ -17,5 +17,13 @@ export function getJwtSecretBytes(): Uint8Array {
 }
 
 export function getEncryptionKey(): string {
-  return process.env.ENCRYPTION_KEY || getRequiredEnv("JWT_SECRET");
+  // ENCRYPTION_KEY should be set separately from JWT_SECRET in production
+  const key = process.env.ENCRYPTION_KEY;
+  if (!key) {
+    console.warn(
+      "[SECURITY] ENCRYPTION_KEY not set — falling back to JWT_SECRET. Set a dedicated ENCRYPTION_KEY in production."
+    );
+    return getRequiredEnv("JWT_SECRET");
+  }
+  return key;
 }
