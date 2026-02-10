@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     description: "Trouvez vos médicaments en rupture de stock et localisez les pharmacies qui les ont.",
   },
   verification: {
-    google: "VOTRE_CODE_VERIFICATION_GOOGLE",
+    google: process.env.GOOGLE_SITE_VERIFICATION || "",
   },
 };
 
