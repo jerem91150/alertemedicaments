@@ -1,7 +1,11 @@
 import { Resend } from 'resend';
 import { prisma } from './prisma';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY!);
+  return _resend;
+}
 const FROM_EMAIL = process.env.OUTREACH_FROM_EMAIL || 'contact@meditrouve.fr';
 const FROM_NAME = process.env.OUTREACH_FROM_NAME || 'MediTrouve';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://meditrouve.fr';
@@ -36,7 +40,7 @@ export async function sendOutreachEmail(emailId: string): Promise<boolean> {
   const bodyWithTracking = addTrackingPixel(email.body, email.trackingId!);
 
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: `${FROM_NAME} <${FROM_EMAIL}>`,
       to: email.contact.email,
       subject: email.subject,
