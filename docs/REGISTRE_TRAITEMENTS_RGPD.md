@@ -1,6 +1,6 @@
 # Registre des Traitements de Données Personnelles
 
-**AlerteMedicaments**
+**MediTrouve**
 Document conforme à l'Article 30 du RGPD
 Dernière mise à jour : Janvier 2025
 
@@ -13,7 +13,7 @@ Dernière mise à jour : Janvier 2025
 | Raison sociale | [À compléter] |
 | SIRET | [À compléter] |
 | Adresse | [À compléter] |
-| Email DPO | dpo@alertemedicaments.fr |
+| Email DPO | dpo@meditrouve.fr |
 | Téléphone | [À compléter] |
 
 ---

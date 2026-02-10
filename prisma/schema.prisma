@@ -1,4 +1,4 @@
-// AlerteMedicaments - Schema Prisma
+// MediTrouve - Schema Prisma
 // Suivi des ruptures de medicaments + Rappels de prise
 
 generator client {

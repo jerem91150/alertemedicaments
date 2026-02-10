@@ -47,7 +47,7 @@ Dashboard Vercel → Settings → Environment Variables :
 
 Option A : Avant le deploy (recommandé)
 ```bash
-cd ~/projects/alertemedicaments
+cd ~/projects/meditrouve
 vercel env pull .env.local
 npx prisma db push
 ```

@@ -2,7 +2,7 @@
 
 **Date** : 2026-02-09  
 **Branche** : `fix/audit-critical-issues`  
-**PR** : https://github.com/jerem91150/alertemedicaments/pull/new/fix/audit-critical-issues
+**PR** : https://github.com/jerem91150/meditrouve/pull/new/fix/audit-critical-issues
 
 ---
 

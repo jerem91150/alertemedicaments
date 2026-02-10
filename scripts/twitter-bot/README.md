@@ -1,4 +1,4 @@
-# 🤖 Twitter Bot - AlerteMedicaments
+# 🤖 Twitter Bot - MediTrouve
 
 Bot automatique qui tweete les nouvelles ruptures de médicaments détectées dans la base BDPM.
 
@@ -21,7 +21,7 @@ npm run bot
 
 ```bash
 # Toutes les 6h, max 5 tweets/run = 20/jour (free tier = 17, ajuster MAX_TWEETS_PER_RUN)
-0 */6 * * * cd /tmp/alertemedicaments/scripts/twitter-bot && npm run bot >> /var/log/twitter-bot.log 2>&1
+0 */6 * * * cd /tmp/meditrouve/scripts/twitter-bot && npm run bot >> /var/log/twitter-bot.log 2>&1
 ```
 
 ## Tracking

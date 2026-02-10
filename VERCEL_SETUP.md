@@ -59,7 +59,7 @@ Une fois `DATABASE_URL` configurée dans Vercel :
 
 #### Option A : Via Vercel CLI (recommandé)
 ```bash
-cd ~/projects/alertemedicaments
+cd ~/projects/meditrouve
 
 # Installer Vercel CLI si pas déjà fait
 npm i -g vercel

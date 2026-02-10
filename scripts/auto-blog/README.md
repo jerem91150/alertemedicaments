@@ -27,7 +27,7 @@ scripts/auto-blog/
 ## 🚀 Lancement manuel
 
 ```bash
-cd ~/projects/alertemedicaments
+cd ~/projects/meditrouve
 
 # Test dry-run (1 article, pas de publication)
 npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/auto-blog/test-pipeline.ts

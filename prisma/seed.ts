@@ -10,10 +10,10 @@ async function main() {
   const hashedPassword = await bcrypt.hash('admin123', 12);
 
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@alertemedicaments.fr' },
+    where: { email: 'admin@meditrouve.fr' },
     update: {},
     create: {
-      email: 'admin@alertemedicaments.fr',
+      email: 'admin@meditrouve.fr',
       name: 'Admin',
       password: hashedPassword,
       plan: 'PREMIUM',
@@ -407,7 +407,7 @@ async function main() {
   console.log('=================================');
   console.log('COMPTE ADMIN MEDITROUVE');
   console.log('=================================');
-  console.log('Email: admin@alertemedicaments.fr');
+  console.log('Email: admin@meditrouve.fr');
   console.log('Mot de passe: admin123');
   console.log('=================================');
 }

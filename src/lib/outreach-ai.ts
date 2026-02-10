@@ -94,7 +94,7 @@ function buildPrompt(
   template: string,
   shortages: string
 ): string {
-  const base = `Tu es un expert en communication santé pour AlerteMedicaments (alertemedicaments.fr), une application française gratuite de suivi des ruptures de médicaments.
+  const base = `Tu es un expert en communication santé pour MediTrouve (meditrouve.fr), une application française gratuite de suivi des ruptures de médicaments.
 
 Personnalise le mail ci-dessous pour le destinataire. Le mail doit être professionnel, chaleureux et convaincant. Garde la structure HTML du template mais adapte le contenu.
 
@@ -180,7 +180,7 @@ function staticFallback(
     .replace(/\[Nom\]/g, contact.name)
     .replace(/\[nom de l'association\]/gi, contact.name)
     .replace(/\[Prénom Nom\]/g, 'Jérémy Porteron')
-    .replace(/\[email\]/g, 'contact@alertemedicaments.fr')
+    .replace(/\[email\]/g, 'contact@meditrouve.fr')
     .replace(/\[téléphone\]/g, '')
     .replace(/\[date\]/g, new Date().toLocaleDateString('fr-FR'));
 
@@ -213,7 +213,7 @@ export async function personalizeEmail(
   campaign: OutreachCampaign,
   template: string
 ): Promise<{ subject: string; body: string }> {
-  const subject = campaign.subject || 'AlerteMedicaments — Partenariat';
+  const subject = campaign.subject || 'MediTrouve — Partenariat';
   const shortages = await getActiveShortages(contact.location);
 
   const prompt = buildPrompt(contact, campaign, template, shortages);
@@ -222,7 +222,7 @@ export async function personalizeEmail(
   if (aiBody && aiBody.length > 100) {
     // Also personalize subject
     const subjectPrompt = `Génère un objet de mail personnalisé et accrocheur pour: ${contact.name} (${contact.type}${contact.specialty ? `, ${contact.specialty}` : ''}).
-Contexte: outreach pour AlerteMedicaments, app de suivi des ruptures de médicaments.
+Contexte: outreach pour MediTrouve, app de suivi des ruptures de médicaments.
 Objet de base: "${subject}"
 Retourne UNIQUEMENT l'objet, rien d'autre. Max 80 caractères.`;
 

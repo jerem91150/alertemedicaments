@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       type,
       mode: mode || 'SEMI_AUTO',
       template,
-      subject: subject || `AlerteMedicaments — Partenariat ${type.toLowerCase()}`,
+      subject: subject || `MediTrouve — Partenariat ${type.toLowerCase()}`,
     },
   });
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env ts-node
 /**
- * AlerteMedicaments Outreach CLI
+ * MediTrouve Outreach CLI
  *
  * Usage:
  *   npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/outreach-cli.ts <command> [options]
@@ -332,7 +332,7 @@ async function createCampaign() {
       type: type.toUpperCase() as any,
       mode: mode.toUpperCase() as any,
       template,
-      subject: subject || `AlerteMedicaments — ${name}`,
+      subject: subject || `MediTrouve — ${name}`,
     },
   });
 
@@ -352,7 +352,7 @@ async function main() {
     case 'create': await createCampaign(); break;
     default:
       console.log(`
-${c.bold}📧 AlerteMedicaments Outreach CLI${c.reset}
+${c.bold}📧 MediTrouve Outreach CLI${c.reset}
 
 ${c.cyan}Commands:${c.reset}
   import     --csv <file>                         Import contacts from CSV

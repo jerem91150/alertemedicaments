@@ -14,7 +14,7 @@ Vous le savez mieux que personne : les ruptures de médicaments sont devenues un
 
 ## 🔔 MediTrouve : Un outil gratuit pour vos patients
 
-**MediTrouve** (alertemedicaments.fr) est une application gratuite qui permet à vos patients de :
+**MediTrouve** (meditrouve.fr) est une application gratuite qui permet à vos patients de :
 
 ✅ **Être alertés en temps réel** des ruptures de leurs médicaments habituels  
 ✅ **Anticiper** leurs renouvellements d'ordonnance  
@@ -60,7 +60,7 @@ Cordialement,
 
 **[Prénom Nom]**  
 Responsable Partenariats Officines  
-MediTrouve – alertemedicaments.fr  
+MediTrouve – meditrouve.fr  
 📧 [email]  
 📱 [téléphone]
 

@@ -10,7 +10,7 @@ Les ruptures de médicaments représentent aujourd'hui un enjeu majeur de santé
 
 Pour de nombreux patients atteints de pathologies chroniques, cette situation génère stress, incompréhension et risques pour leur santé.
 
-**C'est pourquoi nous avons créé MediTrouve** (alertemedicaments.fr), une application gratuite qui permet aux patients de :
+**C'est pourquoi nous avons créé MediTrouve** (meditrouve.fr), une application gratuite qui permet aux patients de :
 
 ✅ **Suivre en temps réel** les ruptures et tensions d'approvisionnement de leurs médicaments  
 ✅ **Recevoir des alertes personnalisées** dès qu'un traitement devient indisponible  
@@ -45,7 +45,7 @@ Bien cordialement,
 
 **[Prénom Nom]**  
 Responsable Partenariats  
-MediTrouve – alertemedicaments.fr  
+MediTrouve – meditrouve.fr  
 📧 [email]  
 📱 [téléphone]
 

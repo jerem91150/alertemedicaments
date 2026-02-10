@@ -51,8 +51,8 @@ export default function ReferralCard() {
     if (!data) return;
     if (navigator.share) {
       await navigator.share({
-        title: "AlerteMedicaments — Parrainage",
-        text: "Rejoins AlerteMedicaments et profite d'1 mois Premium offert grâce à mon lien de parrainage !",
+        title: "MediTrouve — Parrainage",
+        text: "Rejoins MediTrouve et profite d'1 mois Premium offert grâce à mon lien de parrainage !",
         url: data.url,
       });
     } else {

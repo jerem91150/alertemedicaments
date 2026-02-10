@@ -46,7 +46,7 @@ export async function GET() {
       premiumMonthsEarned: referrals.filter((r) => r.referrerRewarded).length,
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://alertemedicaments.fr";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://meditrouve.fr";
 
     return NextResponse.json({
       code: referralCode.code,

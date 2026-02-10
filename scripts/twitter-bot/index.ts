@@ -99,7 +99,7 @@ function buildTweet(drugName: string, status: string): string {
     ? 'Rupture de stock'
     : 'Tension d\'approvisionnement';
 
-  const tweet = `${emoji} ${statusLabel} : ${drugName}\n\nSuivez les alertes en temps réel sur alertemedicaments.fr\n\n#RuptureMédicament #Santé #AlerteMedicaments`;
+  const tweet = `${emoji} ${statusLabel} : ${drugName}\n\nSuivez les alertes en temps réel sur meditrouve.fr\n\n#RuptureMédicament #Santé #MediTrouve`;
 
   // Twitter limit = 280 chars
   if (tweet.length > 280) {
@@ -112,7 +112,7 @@ function buildTweet(drugName: string, status: string): string {
 
 // --- Main ---
 async function main() {
-  console.log('🤖 AlerteMedicaments Twitter Bot');
+  console.log('🤖 MediTrouve Twitter Bot');
   console.log(`   Mode: ${DRY_RUN ? '🧪 DRY RUN' : '🚀 LIVE'}`);
   console.log(`   Max tweets/run: ${MAX_TWEETS}\n`);
 

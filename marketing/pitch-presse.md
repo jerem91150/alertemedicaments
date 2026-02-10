@@ -10,7 +10,7 @@
 
 En 2023, l'ANSM a recensé **3 732 ruptures de médicaments**, soit 10 signalements par jour. Diabète, asthme, hypertension, cancers… aucune pathologie n'est épargnée. Pourtant, la plupart des patients découvrent la rupture… au comptoir de la pharmacie.
 
-**MediTrouve (alertemedicaments.fr), lancée en [date], change la donne : elle permet à chacun de suivre ses médicaments et d'être alerté dès qu'un problème d'approvisionnement survient.**
+**MediTrouve (meditrouve.fr), lancée en [date], change la donne : elle permet à chacun de suivre ses médicaments et d'être alerté dès qu'un problème d'approvisionnement survient.**
 
 ---
 
@@ -76,10 +76,10 @@ En 2023, l'ANSM a recensé **3 732 ruptures de médicaments**, soit 10 signaleme
 
 **[Prénom Nom]**  
 Responsable Communication  
-MediTrouve – alertemedicaments.fr  
-📧 presse@alertemedicaments.fr  
+MediTrouve – meditrouve.fr  
+📧 presse@meditrouve.fr  
 📱 [téléphone]  
-🌐 alertemedicaments.fr/presse
+🌐 meditrouve.fr/presse
 
 ---
 

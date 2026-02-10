@@ -1,8 +1,8 @@
-# 🔬 Analyse Approfondie — AlerteMedicaments (MediTrouve)
+# 🔬 Analyse Approfondie — MediTrouve (MediTrouve)
 
 **Date :** 9 février 2026
 **Analyste :** Claude Opus 4
-**Repo :** https://github.com/jerem91150/alertemedicaments
+**Repo :** https://github.com/jerem91150/meditrouve
 **Version analysée :** 1.0.0
 
 ---
@@ -380,7 +380,7 @@ Annulation → Webhook customer.subscription.deleted → Plan → FREE
 | **Consentement cookies** | `CookieConsent` component | ✅ |
 | **Mentions légales** | Pages dédiées (CGU, confidentialité) | ✅ |
 | **Base légale santé (Art. 9.2.a)** | Consentement explicite documenté | ✅ |
-| **DPO désigné** | dpo@alertemedicaments.fr (à compléter) | ⚠️ |
+| **DPO désigné** | dpo@meditrouve.fr (à compléter) | ⚠️ |
 | **Notification violation** | Non implémenté | ❌ |
 
 ### 6.3 Points de vigilance sécurité

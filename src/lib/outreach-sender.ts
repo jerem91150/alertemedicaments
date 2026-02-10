@@ -2,9 +2,9 @@ import { Resend } from 'resend';
 import { prisma } from './prisma';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM_EMAIL = process.env.OUTREACH_FROM_EMAIL || 'contact@alertemedicaments.fr';
-const FROM_NAME = process.env.OUTREACH_FROM_NAME || 'AlerteMedicaments';
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://alertemedicaments.fr';
+const FROM_EMAIL = process.env.OUTREACH_FROM_EMAIL || 'contact@meditrouve.fr';
+const FROM_NAME = process.env.OUTREACH_FROM_NAME || 'MediTrouve';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://meditrouve.fr';
 
 // ─── Add tracking pixel to email body ────────────────────────────────
 
@@ -148,10 +148,10 @@ export async function processFollowUps(): Promise<number> {
         subject: `Re: ${email.subject}`,
         body: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
 <p>Bonjour ${email.contact.name},</p>
-<p>Je me permets de revenir vers vous concernant mon précédent message au sujet d'AlerteMedicaments.</p>
+<p>Je me permets de revenir vers vous concernant mon précédent message au sujet d'MediTrouve.</p>
 <p>Avec plus de 3 700 ruptures de médicaments signalées chaque année, nous pensons que notre outil gratuit pourrait réellement aider ${email.contact.type === 'PHARMACY' ? 'vos patients' : email.contact.type === 'ASSOCIATION' ? 'vos adhérents' : 'vos lecteurs'}.</p>
 <p>Auriez-vous quelques minutes pour en discuter ?</p>
-<p>Bien cordialement,<br>L'équipe AlerteMedicaments</p>
+<p>Bien cordialement,<br>L'équipe MediTrouve</p>
 </div>`,
         status: 'APPROVED',
       },
