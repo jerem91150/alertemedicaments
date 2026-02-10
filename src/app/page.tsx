@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, Bell, Pill, AlertTriangle, Clock, Shield, Zap, Users, Mail, ChevronRight, Activity, Heart, TrendingUp, Lock } from "lucide-react";
+import { Search, Bell, Pill, AlertTriangle, Clock, Shield, Zap, Users, Mail, ChevronRight, Activity, Heart, TrendingUp, Lock, ArrowRight } from "lucide-react";
 import { OrganizationSchema, WebSiteSchema } from "@/components/StructuredData";
 import HomeSearch from "@/components/home/HomeSearch";
 import { FadeIn } from "@/components/home/AnimatedHero";
