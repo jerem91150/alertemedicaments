@@ -52,6 +52,9 @@ model User {
   receivedInvites  FamilyInvite[]   @relation("InvitedUser")
   pushTokens       PushToken[]
   points           UserPoints?
+  referralCode     ReferralCode?  @relation("ReferralCodeOwner")
+  referralsMade    Referral[]     @relation("ReferralsMade")
+  referralsReceived Referral[]    @relation("ReferralsReceived")
 }
 
 // Profile pour mode famille/aidant (self, parent, enfant, etc.)
@@ -607,4 +610,51 @@ model PushToken {
   @@index([userId])
   @@index([token])
   @@index([isActive])
+}
+
+// ============================================
+// PARRAINAGE (Referral System)
+// ============================================
+
+enum ReferralStatus {
+  PENDING
+  COMPLETED
+  REWARDED
+  EXPIRED
+}
+
+model ReferralCode {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  code      String   @unique
+  createdAt DateTime @default(now())
+
+  user      User      @relation("ReferralCodeOwner", fields: [userId], references: [id], onDelete: Cascade)
+  referrals Referral[] @relation("ReferralsByCode")
+
+  @@index([code])
+}
+
+model Referral {
+  id              String         @id @default(cuid())
+  referralCodeId  String
+  referrerId      String         // Le parrain
+  refereeId       String         // Le filleul
+  status          ReferralStatus @default(PENDING)
+  referrerRewarded Boolean       @default(false)
+  refereeRewarded  Boolean       @default(false)
+  referrerPremiumUntil DateTime?
+  refereePremiumUntil  DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  referralCode    ReferralCode   @relation("ReferralsByCode", fields: [referralCodeId], references: [id], onDelete: Cascade)
+  referrer        User           @relation("ReferralsMade", fields: [referrerId], references: [id], onDelete: Cascade)
+  referee         User           @relation("ReferralsReceived", fields: [refereeId], references: [id], onDelete: Cascade)
+
+  @@unique([refereeId])
+  @@index([referrerId])
+  @@index([referralCodeId])
+  @@index([status])
 }
