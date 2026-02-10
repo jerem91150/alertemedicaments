@@ -46,7 +46,8 @@
     "resend": "6.6.0",
     "stripe": "^20.1.2",
     "tailwind-merge": "3.4.0",
-    "zod": "^4.3.4"
+    "zod": "^4.3.4",
+    "nanoid": "^5.0.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
