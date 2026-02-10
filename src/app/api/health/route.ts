@@ -6,14 +6,24 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const startTime = Date.now();
 
-  const health = {
-    status: 'ok' as 'ok' | 'degraded' | 'error',
+  const health: {
+    status: 'ok' | 'degraded' | 'error';
+    timestamp: string;
+    version: string;
+    checks: {
+      database: { status: string; latency: number };
+      bdpmSync: { status: string; lastSync: string | null; hoursAgo: number | null };
+      memory: { status: string; usedMB: number; totalMB: number };
+    };
+    responseTime?: number;
+  } = {
+    status: 'ok',
     timestamp: new Date().toISOString(),
     version: process.env.npm_package_version || '1.0.0',
-    uptime: process.uptime(),
     checks: {
-      database: { status: 'unknown' as string, latency: 0 },
-      memory: { status: 'ok' as string, used: 0, total: 0 },
+      database: { status: 'unknown', latency: 0 },
+      bdpmSync: { status: 'unknown', lastSync: null, hoursAgo: null },
+      memory: { status: 'ok', usedMB: 0, totalMB: 0 },
     },
   };
 
@@ -21,17 +31,33 @@ export async function GET() {
   try {
     const dbStart = Date.now();
     await prisma.$queryRaw`SELECT 1`;
-    health.checks.database = {
-      status: 'ok',
-      latency: Date.now() - dbStart,
-    };
+    health.checks.database = { status: 'ok', latency: Date.now() - dbStart };
   } catch (error) {
-    health.checks.database = {
-      status: 'error',
-      latency: 0,
-    };
-    health.status = 'degraded';
-    console.error('Health check - Database error:', error);
+    health.checks.database = { status: 'error', latency: 0 };
+    health.status = 'error';
+    console.error('[HEALTH_CHECK_DB_ERROR]', error instanceof Error ? error.message : error);
+  }
+
+  // Check BDPM sync (last medication update < 24h)
+  try {
+    const lastMed = await prisma.medication.findFirst({
+      orderBy: { updatedAt: 'desc' },
+      select: { updatedAt: true },
+    });
+    if (lastMed) {
+      const hoursAgo = (Date.now() - lastMed.updatedAt.getTime()) / (1000 * 60 * 60);
+      health.checks.bdpmSync = {
+        status: hoursAgo < 48 ? 'ok' : 'warning',
+        lastSync: lastMed.updatedAt.toISOString(),
+        hoursAgo: Math.round(hoursAgo * 10) / 10,
+      };
+      if (hoursAgo >= 48) health.status = 'degraded';
+    } else {
+      health.checks.bdpmSync = { status: 'warning', lastSync: null, hoursAgo: null };
+    }
+  } catch (error) {
+    health.checks.bdpmSync = { status: 'error', lastSync: null, hoursAgo: null };
+    console.error('[HEALTH_CHECK_SYNC_ERROR]', error instanceof Error ? error.message : error);
   }
 
   // Check memory
@@ -40,23 +66,14 @@ export async function GET() {
   const totalMB = Math.round(memUsage.heapTotal / 1024 / 1024);
   health.checks.memory = {
     status: usedMB > totalMB * 0.9 ? 'warning' : 'ok',
-    used: usedMB,
-    total: totalMB,
+    usedMB,
+    totalMB,
   };
 
-  // Calculate response time
-  const responseTime = Date.now() - startTime;
+  health.responseTime = Date.now() - startTime;
 
-  return NextResponse.json(
-    {
-      ...health,
-      responseTime,
-    },
-    {
-      status: health.status === 'ok' ? 200 : health.status === 'degraded' ? 200 : 503,
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate',
-      },
-    }
-  );
+  return NextResponse.json(health, {
+    status: health.status === 'error' ? 503 : 200,
+    headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' },
+  });
 }
