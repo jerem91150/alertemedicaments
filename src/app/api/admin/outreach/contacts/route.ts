@@ -1,14 +1,13 @@
-import { requireAdmin } from "@/lib/admin-auth";
-
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/admin-auth';
 
 // GET — List contacts with filters
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
+  const { searchParams } = new URL(req.url);
   const type = searchParams.get('type');
   const status = searchParams.get('status');
   const search = searchParams.get('search');
@@ -41,13 +40,12 @@ export async function GET(req: NextRequest) {
 
 // POST — Create contact or bulk import CSV
 export async function POST(req: NextRequest) {
-  const contentType = req.headers.get('content-type') || '';
-
-  // CSV Import
-  if (contentType.includes('text/csv') || contentType.includes('multipart/form-data')) {
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
+  const contentType = req.headers.get('content-type') || '';
+
+  if (contentType.includes('text/csv') || contentType.includes('multipart/form-data')) {
     const text = await req.text();
     const lines = text.trim().split('\n');
     const header = lines[0].toLowerCase().split(',').map(h => h.trim());
@@ -106,7 +104,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ imported, skipped, total: lines.length - 1 });
   }
 
-  // Single contact create
   const body = await req.json();
   const { name, email, type, location, specialty, notes } = body;
 
@@ -123,20 +120,20 @@ export async function POST(req: NextRequest) {
 
 // DELETE — Delete a contact
 export async function DELETE(req: NextRequest) {
-  const { id } = await req.json();
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
+  const { id } = await req.json();
   await prisma.outreachContact.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
 
 // PATCH — Update a contact
 export async function PATCH(req: NextRequest) {
-  const { id, ...data } = await req.json();
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
+  const { id, ...data } = await req.json();
   const contact = await prisma.outreachContact.update({
     where: { id },
     data,

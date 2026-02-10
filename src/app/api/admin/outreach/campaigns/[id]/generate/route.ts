@@ -1,23 +1,23 @@
-import { requireAdmin } from "@/lib/admin-auth";
-
 import { NextRequest, NextResponse } from 'next/server';
 import { generateCampaignEmails } from '@/lib/outreach-ai';
+import { requireAdmin } from '@/lib/admin-auth';
 
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
+) {
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
-) {
   const { id } = await params;
 
   try {
-    const generated = await generateCampaignEmails(id);
-    return NextResponse.json({ generated, campaignId: id });
-  } catch (err) {
+    const result = await generateCampaignEmails(id);
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error('[ADMIN_GENERATE_ERROR]', error instanceof Error ? error.message : error);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'Generation failed' },
+      { error: error instanceof Error ? error.message : 'Generation failed' },
       { status: 500 }
     );
   }

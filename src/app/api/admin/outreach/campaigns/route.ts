@@ -1,14 +1,13 @@
-import { requireAdmin } from "@/lib/admin-auth";
-
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/admin-auth';
 
 // GET — List campaigns
 export async function GET() {
-  const campaigns = await prisma.outreachCampaign.findMany({
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
+  const campaigns = await prisma.outreachCampaign.findMany({
     orderBy: { createdAt: 'desc' },
     include: {
       _count: {
@@ -17,7 +16,6 @@ export async function GET() {
     },
   });
 
-  // Enrich with stats
   const enriched = await Promise.all(
     campaigns.map(async (c) => {
       const stats = await prisma.outreachEmail.groupBy({
@@ -37,11 +35,11 @@ export async function GET() {
 
 // POST — Create campaign
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { name, type, mode, template, subject } = body;
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
+  const body = await req.json();
+  const { name, type, mode, template, subject } = body;
 
   if (!name || !type || !template) {
     return NextResponse.json(
